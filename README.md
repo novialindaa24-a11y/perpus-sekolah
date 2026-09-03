@@ -6,7 +6,8 @@
 📅 Versi: 1.0.0 | ✅ Status: Berjalan & Diuji
 🛠️ Dibuat dengan: PHP 7+, MySQL, HTML5, CSS3, JavaScript, Font Awesome
  
- 
+ Wireframe
+ https://raw.githubusercontent.com/novialindaa24-a11y/perpus-sekolah/refs/heads/main/wireframe.jpg
  
 📋 DAFTAR ISI
  
