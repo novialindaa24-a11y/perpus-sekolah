@@ -6,9 +6,6 @@ Website ini dapat digunakan untuk mengelola data buku, data anggota, serta prose
 
 🌐 Website
 
-Demo:
-https://perpustakaansekolahhh.site.je/index.php?i=1
-
 ✨ Fitur
 
 Beberapa fitur yang tersedia dalam sistem perpustakaan ini antara lain:
