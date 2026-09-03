@@ -35,336 +35,331 @@ Sistem Informasi Perpustakaan Sekolah berbasis web yang dikembangkan untuk memud
 - Maksimal pinjam: 3 buku per siswa
 - Denda keterlambatan: Rp 10.000 / hari
  
- 
- 
 🎨 1. MOCKUP UI
  
-Tampilan antarmuka sistem yang telah diimplementasikan:
+Tampilan antarmuka sistem — Dashboard Admin dengan Logo SMA Negeri 1 Bantul
  
 plaintext
   
-┌──────────────────────────────────────────────────────────────┐
-│  📸 logo.jpeg                                                │
-│  📚 PERPUSTAKAAN                                             │
-│  SMA NEGERI 1 BANTUL                                         │
-├──────────────────────┬─────────────────────────────────────┤
-│  🟢 SIDEBAR MENU     │  📊 DASHBOARD — BERANDA              │
-│                      │  ┌────────┐ ┌─────────┐ ┌─────────┐  │
-│  🏠 Dashboard       │  │ Buku   │ │ Anggota │ │ Pinjam  │  │
-│  📖 Kelola Buku     │  │  150   │ │  450    │ │   12    │  │
-│  👤 Kelola Anggota  │  └────────┘ └─────────┘ └─────────┘  │
-│  📝 Transaksi Pinjam│  ┌────────┐                           │
-│  📤 Pengembalian    │  │ Kembali│  ⚠️ Notifikasi Denda      │
-│  ✅ Konfirmasi Pinjam│ │   8    │  📈 Grafik Statistik      │
-│  📊 Laporan         │  └────────┘  📅 Filter Tanggal       │
-│  💰 Kelola Denda    │                                       │
-│  👤 Profil Saya     │                                       │
-│  🚪 Keluar          │                                       │
-└──────────────────────┴─────────────────────────────────────┘
+╔══════════════════════════════════════════════════════════════════════╗
+║  📸 [LOGO.JPEG]  PERPUSTAKAAN                                        ║
+║  SMA NEGERI 1 BANTUL                                                 ║
+╠══════════════════════════════════╦═══════════════════════════════════╣
+║  🟢 SIDEBAR — HIJAU TUA (#166534) │  📊 DASHBOARD — HALAMAN UTAMA     ║
+║                                  │                                   ║
+║  🏠 Dashboard (aktif)            │  ┌──────────┐ ┌──────────┐       ║
+║  📖 Kelola Buku                  │  │ 📚 Buku  │ │ 👤 Anggota│       ║
+║  👤 Kelola Anggota               │  │   150    │ │   450     │       ║
+║  📝 Transaksi Pinjam             │  └──────────┘ └──────────┘       ║
+║  📤 Pengembalian                 │  ┌──────────┐ ┌──────────┐       ║
+║  ✅ Konfirmasi Pinjam            │  │ 📅 Pinjam │ │ 📤 Kembali│       ║
+║  📊 Laporan                      │  │   12     │ │    8     │       ║
+║  💰 Kelola Denda                 │  └──────────┘ └──────────┘       ║
+║  👤 Profil Admin                 │                                   ║
+║  🚪 Logout                       │  ⚠️ Peringatan Keterlambatan      ║
+║                                  │  ┌─────────────────────────────┐  ║
+║                                  │  │ Nama Siswa — Judul Buku     │  ║
+║                                  │  │ Terlambat 3 hari | Rp30.000 │  ║
+║                                  │  └─────────────────────────────┘  ║
+║                                  │                                   ║
+║                                  │  📈 Grafik Statistik Peminjaman   ║
+║                                  │  └─────────────────────────────── ║
+╚══════════════════════════════════╩═══════════════════════════════════╝
  
- 
-Desain UI:
- 
-- ✅ Warna utama: Hijau Tua (#166534) + Aksen Kuning (#facc15)
-- ✅ Logo sekolah:  logo.jpeg  di bagian atas sidebar
-- ✅ Responsive — tampil sempurna di HP, Tablet, maupun Desktop
-- ✅ Notifikasi keterlambatan & denda otomatis muncul
-- ✅ Grafik statistik peminjaman mingguan dengan Chart.js
-- ✅ Suara notifikasi saat login berhasil ( notif.mpeg )
  
  
  
 📊 2. USE CASE DIAGRAM
  
-Hubungan aktor dengan fungsi dalam sistem:
+Hubungan Aktor ↔ Fungsi Sistem
  
 plaintext
   
-┌──────────────────────────────────────────────────┐
-│             SISTEM PERPUSTAKAAN                   │
-└────────────┬───────────────────┬──────────────────┘
-             │                   │
-    ┌────────┼───────────┬───────┼──────────┐
-    │        │           │       │          │
-┌───┴────┐ ┌┴───────┐ ┌──┴──────┐   │  ┌───┴──────┐
-│ ADMIN  │ │PETUGAS │ │ SISWA   │   │  │ LOGIN    │
-└───┬────┘ └──┬─────┘ └──┬──────┘   │  └────┬─────┘
-    │         │          │          │       │
-    ├─────────┼──────────┤─── Login ────────┘
-    │         │          │
-    ├─ Kelola Buku ──────┤
-    ├─ Kelola Anggota ───┤
-    ├─ Laporan Pinjam ───┤
-    ├─ Laporan Kembali ──┤
-    │         │          │
-    │         ├─ Proses Pinjam ───────────┐
-    │         ├─ Proses Kembali ──────────┤
-    │         ├─ Hitung Denda ───────────┤
-    │         ├─ Tandai Bayar Denda ─────┤
-    │         │          │               │
-    │         │          ├─ Lihat Katalog Buku
-    │         │          ├─ Ajukan Pinjam
-    │         │          ├─ Cek Status Pinjam
-    │         │          ├─ Lihat Riwayat
-    │         │          └─ Notifikasi Denda
-    │         │
-    └──── HANYA ADMIN ────┐
-         ├─ Kelola Akun Petugas
-         ├─ Hapus Data Permanen
-         └─ Backup Database
+                  ┌──────────────────────────────────┐
+                  │     SISTEM PERPUSTAKAAN          │
+                  │      SMA NEGERI 1 BANTUL         │
+                  └────────────┬─────────────────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          │                    │                    │
+   ┌──────┴──────┐      ┌─────┴──────┐      ┌──────┴──────┐
+   │   🔐 ADMIN   │      │   📝 PETUGAS │      │   🎓 SISWA    │
+   └──────┬───────┘      └─────┬───────┘      └──────┬───────┘
+          │                    │                    │
+          │  Login ────────────┼────────────────────┤
+          │                    │                    │
+          ├─ Kelola Buku ──────┤                    │
+          ├─ Kelola Anggota ───┤                    │
+          ├─ Laporan Pinjam ───┤                    │
+          ├─ Laporan Kembali ──┤                    │
+          │                    ├─ Proses Pinjam ────┤
+          │                    ├─ Pengembalian ─────┤
+          │                    ├─ Hitung Denda ─────┤
+          │                    ├─ Tandai Bayar ─────┤
+          │                    │                    ├─ Lihat Katalog
+          │                    │                    ├─ Ajukan Pinjam
+          │                    │                    ├─ Cek Status
+          │                    │                    ├─ Riwayat
+          │                    │                    └─ Notifikasi Denda
+          │
+          └─── HANYA ADMIN ────┐
+               ├─ Kelola Akun Petugas
+               ├─ Hapus Data
+               └─ Backup Database
  
- 
-Aktor Hak Akses 
-Admin Akses penuh — kelola buku, anggota, laporan, denda, akun petugas, backup data 
-Petugas Transaksi pinjam/kembali, konfirmasi pinjam, kelola denda, buat laporan 
-Siswa Lihat katalog, ajukan pinjam, cek status, riwayat pinjam, notifikasi denda 
  
  
  
 🔄 3. ACTIVITY DIAGRAM
  
-📖 Alur Peminjaman Buku
+Alur Proses Utama — Peminjaman & Pengembalian
+ 
+📖 Alur Peminjaman
  
 plaintext
   
- Mulai
-   │
-   ▼
-┌──────────────┐
-│ Login Siswa  │── NIS + Password
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│ Ajukan Pinjam│── Pilih buku yang diinginkan
-└──────┬───────┘
-       │
-       ▼
-┌──────────────┐
-│ Cek Stok Buku│◄──────────┐
-└──────┬───────┘           │
-       │ TIDAK ADA         │
-       ▼                   │
-  ❌ Ditolak ───────────────┘
-       │ ADA
-       ▼
-┌──────────────┐
-│ Cek Maksimal │── Maks 3 buku / siswa
-│ Pinjam (3)   │◄──────────┐
-└──────┬───────┘           │
-       │ ≥3                │
-       ▼                   │
-  ❌ Ditolak ───────────────┘
-       │ <3
-       ▼
-┌──────────────────┐
-│ Petugas Konfirmasi│
-└──────┬───────────┘
-       │
-       ▼
-┌──────────────────────┐
-│ Simpan Peminjaman    │
-│ tgl_batas_kembali =  │
-│ tgl_pinjam + 7 hari  │
-└──────┬───────────────┘
-       │
-       ▼
-     ✅ Selesai
+   MULAI
+     │
+     ▼
+   ┌──────────────┐
+   │  Login Siswa  │  NIS + Password
+   └──────┬───────┘
+          │
+          ▼
+   ┌──────────────┐
+   │ Ajukan Pinjam │  Pilih Buku
+   └──────┬───────┘
+          │
+          ▼
+   ┌──────────────┐        TIDAK TERSEDIA
+   │ Cek Stok Buku │ ────────────────→ ❌ DITOLAK
+   └──────┬───────┘
+          │ TERSEDIA
+          ▼
+   ┌──────────────┐        ≥ 3 BUKU
+   │ Cek Maksimal  │ ────────────────→ ❌ DITOLAK
+   │ Pinjam (3)    │
+   └──────┬───────┘
+          │ < 3
+          ▼
+   ┌──────────────────┐
+   │ Petugas Konfirmasi │
+   └──────┬───────────┘
+          │
+          ▼
+   ┌──────────────────────┐
+   │ Simpan Peminjaman    │  tgl_batas = +7 hari
+   └──────┬───────────────┘
+          │
+          ▼
+        ✅ SELESAI
  
  
-💰 Alur Pengembalian & Perhitungan Denda
+💰 Alur Pengembalian & Denda
  
 plaintext
   
- Buku Dikembalikan
-        │
-        ▼
-┌──────────────────────┐
-│ Cek Tgl Batas Kembali│
-└──────────┬───────────┘
-           │
-     ┌─────┴─────┐
-     │ Tepat Waktu│ Terlambat
-     ▼           ▼
-  ┌─────────┐  ┌──────────────────────────┐
-  │ Denda=0 │  │ Hitung Denda:            │
-  └─────────┘  │ Hari Terlambat × Rp10.000│
-               └────────────┬─────────────┘
-                            │
-                    ┌───────┴───────┐
-                    │ Simpan Denda  │
-                    │ Status: Belum Bayar
-                    └───────┬───────┘
-                            │
-                    ▼ Notifikasi ke Siswa
-                            │
-                    ┌───────▼───────┐
-                    │ Siswa Bayar ke│
-                    │ Petugas       │
-                    └───────┬───────┘
-                            │
-                    ▼ Tandai: Sudah Bayar
-                            │
-                    ▼ Simpan tgl_bayar & nama petugas
-                            │
-                          ✅ Selesai
+   BUKU DIKEMBALIKAN
+          │
+          ▼
+   ┌──────────────────────┐
+   │ Cek Tgl Batas Kembali│
+   └──────────┬───────────┘
+              │
+       ┌──────┴──────┐
+       │ Tepat Waktu │  TERLAMBAT
+       ▼             ▼
+   ┌─────────┐   ┌──────────────────────────────┐
+   │ Denda=0 │   │ Hitung Denda:                │
+   └─────────┘   │ Hari × Rp 10.000/hari        │
+                 └──────────────┬───────────────┘
+                                │
+                        ┌───────▼───────┐
+                        │ Simpan Denda  │ Status: Belum Bayar
+                        └───────┬───────┘
+                                │
+                        ▼ Notifikasi ke Siswa
+                                │
+                        ┌───────▼───────┐
+                        │ Siswa Bayar    │
+                        └───────┬───────┘
+                                │
+                        ▼ Tandai: Sudah Bayar
+                                │
+                              ✅ SELESAI
  
  
  
  
 🧮 4. ALGORITMA
  
-🔹 Algoritma Perhitungan Denda
+Logika Perhitungan — Denda, Validasi Pinjam, Login
  
 plaintext
   
-INPUT: tgl_batas_kembali, tgl_dikembalikan
-OUTPUT: hari_terlambat, total_denda
-
-1. HARI_TERLAMBAT = SELISIH_HARI(tgl_dikembalikan, tgl_batas_kembali)
-2. JIKA HARI_TERLAMBAT > 0 MAKA:
-     DENDA_PER_HARI = 10000
-     TOTAL_DENDA = HARI_TERLAMBAT × DENDA_PER_HARI
-   SELAIN ITU:
-     TOTAL_DENDA = 0
-     HARI_TERLAMBAT = 0
-3. SIMPAN ke tabel pengembalian
-4. KIRIM notifikasi ke halaman siswa
- 
- 
-🔹 Algoritma Validasi Peminjaman
- 
-plaintext
-  
-INPUT: id_anggota, kode_buku
-ATURAN: Maksimal 3 buku sedang dipinjam
-
-1. JUMLAH_PINJAM = COUNT(*) FROM peminjaman 
-      WHERE id_anggota = ? AND status = 'Dipinjam'
-2. JIKA JUMLAH_PINJAM >= 3 → TOLAK (Maksimal 3 buku)
-3. CEK stok_buku dari tabel buku
-4. JIKA stok_buku <= 0 → TOLAK (Buku tidak tersedia)
-5. SIMPAN peminjaman, kurangi stok buku
-6. BERHASIL — Tampilkan notifikasi
- 
- 
-🔹 Algoritma Login Siswa
- 
-plaintext
-  
-INPUT: nis, password
-OUTPUT: Session, nama pengguna, notifikasi
-
-1. CARI data di tabel anggota WHERE nis = nis_input
-2. JIKA TIDAK ADA → "NIS tidak terdaftar!"
-3. JIKA password TIDAK SAMA → Cek apakah terbalik?
-   - Cek: nis = password_input DAN password = nis_input
-   - JIKA YA → "⚠️ Sepertinya NIS & Kata Sandi terbalik!"
-   - JIKA TIDAK → "❌ Kata sandi salah!"
-4. JIKA password BENAR:
-   - BUAT Session: id_siswa, nama_siswa
-   - PUTAR suara notifikasi (notif.mpeg)
-   - TAMPILKAN: "✅ Berhasil Masuk! Selamat datang, {nama_anggota}!"
-   - PINDAH ke halaman utama siswa
+┌──────────────────────────────────────────────────────────────┐
+│             📐 ALGORITMA SISTEM PERPUSTAKAAN                 │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  🔹 ALGORITMA 1: PERHITUNGAN DENDA                           │
+│  ──────────────────────────────────────────────────────────  │
+│  INPUT: tgl_batas_kembali, tgl_dikembalikan                  │
+│  OUTPUT: hari_terlambat, total_denda                         │
+│                                                              │
+│  1. HARI_TERLAMBAT = SELISIH_HARI(tgl_dikembalikan,          │
+│                                 tgl_batas_kembali)           │
+│  2. JIKA HARI_TERLAMBAT > 0 MAKA:                            │
+│       DENDA_PER_HARI = 10.000                                │
+│       TOTAL_DENDA = HARI_TERLAMBAT × DENDA_PER_HARI          │
+│     SELAIN ITU:                                              │
+│       TOTAL_DENDA = 0                                        │
+│       HARI_TERLAMBAT = 0                                     │
+│  3. SIMPAN ke tabel pengembalian                             │
+│  4. KIRIM notifikasi ke halaman siswa                        │
+│                                                              │
+│  🔹 ALGORITMA 2: VALIDASI PEMINJAMAN                         │
+│  ──────────────────────────────────────────────────────────  │
+│  INPUT: id_anggota, kode_buku                                │
+│  ATURAN: Maksimal 3 buku sedang dipinjam                      │
+│                                                              │
+│  1. JUMLAH_PINJAM = COUNT(*) FROM peminjaman                 │
+│       WHERE id_anggota = ? AND status = 'Dipinjam'           │
+│  2. JIKA JUMLAH_PINJAM >= 3 → TOLAK (Maksimal 3 buku)        │
+│  3. CEK stok_buku dari tabel buku                            │
+│  4. JIKA stok_buku <= 0 → TOLAK (Buku tidak tersedia)       │
+│  5. SIMPAN peminjaman, kurangi stok buku                     │
+│  6. BERHASIL — Tampilkan notifikasi                          │
+│                                                              │
+│  🔹 ALGORITMA 3: LOGIN SISWA                                 │
+│  ──────────────────────────────────────────────────────────  │
+│  INPUT: nis, password                                        │
+│  OUTPUT: Session, nama_pengguna, notifikasi                  │
+│                                                              │
+│  1. CARI di tabel anggota WHERE nis = nis_input              │
+│  2. JIKA TIDAK ADA → "NIS tidak terdaftar!"                 │
+│  3. JIKA password TIDAK SAMA → Cek terbalik NIS/Password?    │
+│  4. JIKA password BENAR:                                     │
+│       BUAT Session: id_siswa, nama_siswa                     │
+│       PUTAR suara notifikasi                                 │
+│       TAMPILKAN: "Selamat datang, {nama}!"                    │
+│       PINDAH ke halaman utama siswa                          │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
  
  
  
  
 📈 5. FLOWCHART & USER FLOW
  
-Alur navigasi pengguna dalam sistem:
+Alur Navigasi Pengguna dalam Sistem
  
 plaintext
   
-┌──────────────────────┐
-│  🏠 HALAMAN UTAMA    │
-│  Perpustakaan SMAN 1 │
-└──────────┬───────────┘
+         ┌──────────────────────┐
+         │   🏠 HALAMAN UTAMA   │
+         │  Perpustakaan SMAN 1 │
+         └──────────┬───────────┘
+                    │
+          ┌─────────┼──────────┐
+          │         │          │
+          ▼         ▼          ▼
+      ┌────────┐ ┌────────┐ ┌────────┐
+      │ 🔐 Admin│ │📝 Petugas│ │🎓 Siswa │
+      │ Login   │ │ Login   │ │ Login   │
+      └────┬───┘ └────┬───┘ └────┬───┘
+           │          │          │
+           ▼          ▼          ▼
+      ┌────────┐ ┌────────┐ ┌────────┐
+      │Dashboard│ │Dashboard│ │Beranda │
+      │ Admin   │ │ Petugas │ │ Siswa  │
+      └────┬───┘ └────┬───┘ └────┬───┘
+           │          │          │
+    ┌──────┼──────────┼──────────┤
+    │      │          │          │
+    │  Kelola Buku    │          │
+    │  Kelola Anggota│          │
+    │      │      Transaksi      │
+    │      │    Pinjam/Kembali   │
+    │      │          │          │
+    │      │          │      Katalog Buku
+    │      │          │      Ajukan Pinjam
+    │      │          │      Cek Status
+    │      │          │      Riwayat
+    │      │          │      Notifikasi Denda
+    │      │          │
+    └──────┼──────────┘
            │
-    ┌──────┼──────────┬──────────┐
-    │      │          │          │
-    ▼      ▼          ▼          │
-  Admin  Petugas    Siswa        │
-  Login   Login     Login        │
-    │      │          │          │
-    ▼      ▼          ▼          │
-┌────────┐ ┌────────┐ ┌────────┐ │
-│Dashboard│ │Dashboard│ │Beranda│ │
-│ Admin   │ │ Petugas │ │ Siswa │ │
-└───┬────┘ └──┬─────┘ └──┬─────┘ │
-    │         │          │        │
-    ├─ Kelola Buku ──────┤        │
-    │         │          │        │
-    │         ├─ Transaksi Pinjam │
-    │         ├─ Pengembalian     │
-    │         ├─ Kelola Denda     │
-    │         │          │        │
-    │         │          ├─ Katalog Buku
-    │         │          ├─ Ajukan Pinjam
-    │         │          ├─ Cek Status
-    │         │          ├─ Riwayat Pinjam
-    │         │          └─ Notifikasi Denda
-    │                            │
-    └────────────┬───────────────┘
-                 │
-                 ▼
-              🚪 Logout
-                 │
-                 ▼
-          Kembali ke Halaman Utama
+           ▼
+        🚪 LOGOUT
+           │
+           ▼
+    ┌────────────────┐
+    │ Kembali ke     │
+    │ Halaman Login  │
+    └────────────────┘
  
  
  
  
 🗄️ 6. ERD — ENTITY RELATIONSHIP DIAGRAM
  
-Hubungan antar tabel dalam database:
+Hubungan Antar Tabel Database
  
 plaintext
   
-┌──────────────────┐        1:N        ┌──────────────────┐
-│     ANGGOTA      │◄─────────────────►│   PEMINJAMAN     │
-│ ├─ id_anggota (PK)│                   │ ├─ id_peminjaman (PK)
-│ │─ nis            │                   │ │─ id_anggota (FK)
-│ │─ nama_anggota   │                   │ │─ kode_buku (FK)
-│ │─ username       │                   │ │─ tgl_pinjam
-│ │─ password       │                   │ │─ tgl_batas_kembali
-│ │─ no_hp          │                   │ │─ status (Dipinjam/Dikembalikan)
-│ │─ alamat         │                   │ └──────────────────
-│ └─────────────────┘                          │
-       │                                       │ 1:1
-       │                                       ▼
-       │                                ┌──────────────────┐
-       │                                │  PENGEMBALIAN    │
-┌──────┴──────┐                        │ ├─ id_pengembalian (PK)
-│    BUKU     │◄───────────N:1─────────►│ │─ id_peminjaman (FK)
-│ ├─ kode_buku(PK)│                     │ │─ tgl_kembali
-│ │─ judul_buku   │                     │ │─ denda
-│ │─ pengarang    │                     │ │─ status_denda (Belum Bayar/Sudah Bayar)
-│ │─ penerbit     │                     │ │─ tgl_bayar
-│ │─ tahun        │                     │ │─ dibayar_oleh
-│ │─ nomor_rak    │                     │ └──────────────────
-│ │─ lokasi_rak   │
-│ │─ buku_tersedia│
-│ └───────────────┘
-       │
-       │
-┌──────┴──────┐
-│   PETUGAS   │
-│ ├─ id_petugas(PK)
-│ │─ username
-│ │─ nama_petugas
-│ │─ password
-│ └────────────┘
+  ┌──────────────────┐        1:N        ┌──────────────────┐
+  │     ANGGOTA      │◄─────────────────►│   PEMINJAMAN     │
+  │ ├─ id_anggota (PK)│                   │ ├─ id_peminjaman (PK)
+  │ │─ nis            │                   │ │─ id_anggota (FK)
+  │ │─ nama_anggota   │                   │ │─ kode_buku (FK)
+  │ │─ username       │                   │ │─ tgl_pinjam
+  │ │─ password       │                   │ │─ tgl_batas_kembali
+  │ │─ no_hp          │                   │ │─ status (Dipinjam/Dikembalikan)
+  │ │─ alamat         │                   │ └──────────────────
+  │ └─────────────────┘                          │
+         │                                       │ 1:1
+         │                                       ▼
+         │                                ┌──────────────────┐
+         │                                │  PENGEMBALIAN    │
+  ┌──────┴──────┐                        │ ├─ id_pengembalian (PK)
+  │    BUKU     │◄───────────N:1─────────►│ │─ id_peminjaman (FK)
+  │ ├─ kode_buku(PK)│                     │ │─ tgl_kembali
+  │ │─ judul_buku   │                     │ │─ denda
+  │ │─ pengarang    │                     │ │─ status_denda (Belum Bayar/Sudah Bayar)
+  │ │─ penerbit     │                     │ │─ tgl_bayar
+  │ │─ tahun        │                     │ │─ dibayar_oleh
+  │ │─ nomor_rak    │                     │ └──────────────────
+  │ │─ lokasi_rak   │
+  │ │─ buku_tersedia│
+  │ └───────────────┘
+         │
+         │
+  ┌──────┴──────┐
+  │   PETUGAS   │
+  │ ├─ id_petugas (PK)
+  │ │─ username
+  │ │─ nama_petugas
+  │ │─ password
+  │ └────────────┘
+
+  ┌──────────────────────────────────────────────────────────────┐
+  │  📌 KETERANGAN RELASI:                                       │
+  │  • ANGGOTA (1) ──── (N) PEMINJAMAN    1 siswa pinjam banyak │
+  │  • BUKU    (1) ──── (N) PEMINJAMAN    1 buku dipinjam berkali│
+  │  • PEMINJAMAN (1) ── (1) PENGEMBALIAN 1 pinjam = 1 kembali  │
+  │  • PETUGAS (1) ──── (N) PENGEMBALIAN  Petugas memproses     │
+  └──────────────────────────────────────────────────────────────┘
  
  
-Keterangan Relasi:
+ 
  
-Entitas 1 Relasi Entitas 2 Keterangan 
-Anggota 1 — N Peminjaman 1 siswa dapat meminjam banyak buku 
-Buku 1 — N Peminjaman 1 buku dapat dipinjam berkali-kali 
-Peminjaman 1 — 1 Pengembalian 1 transaksi pinjam = 1 data pengembalian 
-Petugas 1 — N Pengembalian Petugas yang memproses pembayaran denda 
+📥 Cara Menyimpan ke Gambar:
+ 
+1. Salin kode kotak di atas → Buka asciiflow.com → Tempel → Simpan sebagai gambar
+2. Atau Print Screen bagian yang dibutuhkan → Simpan sebagai PNG/JPG
+3. Upload ke folder proyek → Tambahkan di README.md
+ 
+Semua diagram di atas sudah sesuai dengan sistem perpustakaan yang sedang Anda kembangkan — tinggal pakai langsung! 🎒📚a 
  
  
  
